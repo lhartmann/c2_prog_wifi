@@ -7,6 +7,6 @@ New programs can be loaded sending .hex files through the web-interface. You wil
 
 Serial bridge can be accessed through port 9600, but the baud-rate is actually 115200. Try 'nc esp8266 9600' on linux, or any other TCP/IP terminal program (maybe telnet on windows?).
 
-Everything is still alpha. Currently tested with EFM8BB10F2G-A-QFN20 and ESP-01 module: http://www.cear.ufpb.br/~lucas.hartmann/tag/efm8bb1/
+Everything is still alpha. Currently tested with EFM8BB10F2G-A-QFN20 and ESP-01 module: http://app.cear.ufpb.br/~lucas.hartmann/tag/efm8bb1/
 
 LICENSE: GPLv3 or newer.
