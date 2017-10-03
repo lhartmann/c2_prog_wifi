@@ -348,7 +348,7 @@ uint8_t c2_block_read(uint32_t address, uint8_t *data, uint8_t len) {
   C2_POLL_INBUSY();
 
   // 10. Perform a Data Write with the length.
-  C2_DATA_READ_AND_CHECK(len, 1);
+  C2_DATA_WRITE_AND_CHECK(len, 1);
 
   // 11. Poll on InBusy using Address Read until the bit clears.
   C2_POLL_INBUSY();
