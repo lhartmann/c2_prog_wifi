@@ -348,18 +348,24 @@ uint8_t c2_block_read(uint32_t address, uint8_t *data, uint8_t len) {
   C2_POLL_INBUSY();
 
   // 10. Perform a Data Write with the length.
-  C2_DATA_READ_AND_CHECK(len, 1);
+  C2_DATA_WRITE_AND_CHECK(len, 1);
 
   // 11. Poll on InBusy using Address Read until the bit clears.
   C2_POLL_INBUSY();
 
-  // 13a. Repeat step 12 and 13 for each byte specified by the length field.
+  // 12. Poll on OutReady using Address Read until the bit set.
+  C2_POLL_OUTREADY();
+
+  // 13. Read FPI Command Status. Abort if Status != 0x0D.
+  C2_EXPECT_DATA(0x0D);
+
+  // 15a. Repeat step 14 and 15 for each byte specified by the length field.
   uint8_t i = 0;
   do {
-    // 12. Poll on OutReady using Address Read until the bit set.
+    // 14. Poll on OutReady using Address Read until the bit set.
     C2_POLL_OUTREADY();
 
-    // 13. Perform a Data Read instruction. This will read the data from the flash.
+    // 15. Perform a Data Read instruction. This will read the data from the flash.
     C2_DATA_READ_AND_CHECK(data[i], 1);
   } while (++i != len);
 
