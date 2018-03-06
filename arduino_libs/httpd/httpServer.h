@@ -137,7 +137,7 @@ void HttpServer::loop() {
 
   // Read data up to buffer length
   DEBUG_DUMP(bp);
-  bp += c.readBytes(buff + bp, min(sizeof(buff) - bp, av));
+  bp += c.readBytes(buff + bp, _min(sizeof(buff) - bp, av));
   DEBUG(Serial.print("Buffer state ["));
   DEBUG(Serial.write(buff, bp));
   DEBUG(Serial.println("]"));
