@@ -93,6 +93,8 @@ class EchoPage : public HttpServerPage {
 //////////////////////
 class UploadPage : public HttpServerPage {
     bool headerprinted;
+    uint8_t devid;
+    uint8_t revid;
     void onConnect(WiFiClient &client, const char *sub, const char *hash) {
       HttpServerPage::onConnect(client,sub,hash);
       c->print("HTTP/1.1 200 OK\r\n");
@@ -103,7 +105,7 @@ class UploadPage : public HttpServerPage {
     void onEndOfHeader() {
       uint8_t err;
       c->print("<pre>Enable programming mode: ");
-      err = c2_programming_init();
+      err = c2_programming_init(C2_DEVID_UNKNOWN);
       c->println(c2_print_status_by_name(err));
       if (err != C2_SUCCESS) {
         c->stop();
@@ -111,8 +113,7 @@ class UploadPage : public HttpServerPage {
       }
 
       c->print("Device ID: ");
-      uint8_t devid;
-      err = c2_programming_init();
+      err = c2_programming_init(C2_DEVID_UNKNOWN);
       c2_address_write(C2DEVID);
       err = c2_data_read(devid, 1);
       if (err != C2_SUCCESS) {
@@ -124,8 +125,7 @@ class UploadPage : public HttpServerPage {
       c->println(devid, HEX);
 
       c->print("Revision ID: ");
-      uint8_t revid;
-      err = c2_programming_init();
+      err = c2_programming_init(C2_DEVID_UNKNOWN);
       c2_address_write(C2REVID);
       err = c2_data_read(revid, 1);
       if (err != C2_SUCCESS) {
@@ -137,7 +137,7 @@ class UploadPage : public HttpServerPage {
       c->println(revid, HEX);
 
       c->print("Erase flash: ");
-      err = c2_programming_init();
+      err = c2_programming_init(devid);
       err = c2_device_erase();
       c->println(c2_print_status_by_name(err));
       if (err != C2_SUCCESS) {
@@ -168,7 +168,7 @@ class UploadPage : public HttpServerPage {
         c->print  (": ");
         int retries = 5;
         do {
-          err = c2_programming_init();
+          err = c2_programming_init(devid);
           err = c2_block_write(address, h->data, h->len);
         } while (err != C2_SUCCESS && retries--);
         c->println(c2_print_status_by_name(err));
