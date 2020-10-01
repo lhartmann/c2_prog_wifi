@@ -18,7 +18,11 @@
 #ifndef HTTPSERVER_H
 #define HTTPSERVER_H
 
+#ifdef ARDUINO_ARCH_ESP32
+#include <WiFi.h>
+#else
 #include <ESP8266WiFi.h>
+#endif
 #include <WiFiClient.h>
 #include "string.h"
 #include <httpServerPage.h>
