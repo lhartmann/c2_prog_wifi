@@ -1,8 +1,13 @@
 #include <httpServer.h>
 #include <httpServerPage.h>
 #include <c2.h>
+#ifdef ARDUINO_ARCH_ESP32
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#else
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
+#endif
 #include <WiFiClient.h>
 #include <ctype.h>
 #include "serialServer.h"
@@ -234,11 +239,17 @@ void loop() {
       httpServer.begin();
       //      serialServer.begin(115200);
       online = true;
+#ifdef ARDUINO_ARCH_ESP32
+      mdns.begin("esp32");
+#else
       mdns.begin("esp8266", WiFi.localIP(), 5*60);
+#endif
     }
     httpServer.loop();
     serialServer.loop();
+#ifndef ARDUINO_ARCH_ESP32
     mdns.update();
+#endif
   }
 }
 

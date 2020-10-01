@@ -2,7 +2,11 @@
 #define SERIALSERVER_H
 
 #include <Arduino.h>
+#ifdef ARDUINO_ARCH_ESP32
+#include <WiFi.h>
+#else
 #include <ESP8266WiFi.h>
+#endif
 #include <WiFiClient.h>
 
 struct SerialServer {
